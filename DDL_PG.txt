@@ -1,0 +1,197 @@
+CREATE SEQUENCE users_id
+    INCREMENT BY 1
+    MAXVALUE 99999999
+    START WITH 1
+    NO CYCLE
+;
+
+CREATE SEQUENCE companies_id
+    INCREMENT BY 1
+    MAXVALUE 99999999
+    START WITH 1
+    NO CYCLE
+;
+
+CREATE SEQUENCE reasons_id
+    INCREMENT BY 1
+    MAXVALUE 99999999
+    START WITH 1
+    NO CYCLE
+;
+
+CREATE SEQUENCE areas_id
+    INCREMENT BY 1
+    MAXVALUE 99999999
+    START WITH 1
+    NO CYCLE
+;
+
+CREATE SEQUENCE types_id
+    INCREMENT BY 1
+    MAXVALUE 99999999
+    START WITH 1
+    NO CYCLE
+;
+
+create table users (
+  id integer default next_val('users_id'),
+  auth_type integer,
+  name varchar(255),
+  photo_path varchar(255),
+  mail_address varchar(255),
+  password varchar(255),
+  sex integer,
+  birthday timestamp,
+  self_introduction varchar(255),
+  show_age bool,
+  company integer,
+  reason integer,
+  area integer,
+  position integer,
+  twitter varchar(255),
+  facebook varchar(255),
+  linkedin varchar(255),
+  skype varchar(255),
+  slack varchar(255),
+  chatwork varchar(255),
+  github varchar(255),
+  japanese_proficiency varchar(255),
+  birthplace integer,
+  bloodtype integer,
+  welfare varchar(255),
+  work_place integer,
+  wp_detail varchar(255),
+);
+
+create table workhists (
+  user integer,
+  companies integer,
+  from timestamp,
+  to timestamp
+);
+
+create table companies (
+  id integer default next_val('companies_id'),
+  name varchar(255),
+  type integer,
+  established_year varchar(255),
+  salary integer,
+  welfare varchar(255),
+  work_place integer,
+  wp_detail varchar(255),
+  apeal varchar(1023)
+);
+
+create table types (
+  id integer default next_val('types_id'),
+  name varchar(255)
+);
+
+insert into types(name) values ('IT');
+insert into types(name) values ('Webデザイン');
+insert into types(name) values ('機械');
+insert into types(name) values ('電気');
+insert into types(name) values ('電子');
+insert into types(name) values ('半導体');
+insert into types(name) values ('制御');
+insert into types(name) values ('建築');
+insert into types(name) values ('土木');
+insert into types(name) values ('2DCAD');
+insert into types(name) values ('3DCAD');
+insert into types(name) values ('営業');
+insert into types(name) values ('貿易');
+insert into types(name) values ('実習生管理');
+insert into types(name) values ('ホテル');
+insert into types(name) values ('自動車整備');
+insert into types(name) values ('その他');
+
+create table reasons (
+  id integer default next_val('reasons_id'),
+  name varchar(255)
+);
+
+insert into reasons(name) values ('人脈を広げたい');
+insert into reasons(name) values ('新しい取引先を見つけたい');
+insert into reasons(name) values ('業務提携（連携）先を見つけたい');
+insert into reasons(name) values ('投資先を探したい');
+insert into reasons(name) values ('資金調達したい');
+insert into reasons(name) values ('新規事業創出したい');
+insert into reasons(name) values ('M&A・事業承継に興味がある');
+insert into reasons(name) values ('友人を増やしたい');
+insert into reasons(name) values ('助言やアドバイスを受けたい');
+insert into reasons(name) values ('飲み仲間を見つけたい');
+
+create table areas (
+  id integer default next_val('areas_id'),
+  name varchar(255)
+);
+
+insert into areas(name) values ('北海道');
+insert into areas(name) values ('青森県');
+insert into areas(name) values ('岩手県');
+insert into areas(name) values ('宮城県');
+insert into areas(name) values ('秋田県');
+insert into areas(name) values ('山形県');
+insert into areas(name) values ('福島県');
+insert into areas(name) values ('茨城県');
+insert into areas(name) values ('栃木県');
+insert into areas(name) values ('群馬県');
+insert into areas(name) values ('埼玉県');
+insert into areas(name) values ('千葉県');
+insert into areas(name) values ('東京都');
+insert into areas(name) values ('神奈川県');
+insert into areas(name) values ('新潟県');
+insert into areas(name) values ('富山県');
+insert into areas(name) values ('石川県');
+insert into areas(name) values ('福井県');
+insert into areas(name) values ('山梨県');
+insert into areas(name) values ('長野県');
+insert into areas(name) values ('岐阜県');
+insert into areas(name) values ('静岡県');
+insert into areas(name) values ('愛知県');
+insert into areas(name) values ('三重県');
+insert into areas(name) values ('滋賀県');
+insert into areas(name) values ('京都府');
+insert into areas(name) values ('大阪府');
+insert into areas(name) values ('兵庫県');
+insert into areas(name) values ('奈良県');
+insert into areas(name) values ('和歌山県');
+insert into areas(name) values ('鳥取県');
+insert into areas(name) values ('島根県');
+insert into areas(name) values ('岡山県');
+insert into areas(name) values ('広島県');
+insert into areas(name) values ('山口県');
+insert into areas(name) values ('徳島県');
+insert into areas(name) values ('香川県');
+insert into areas(name) values ('愛媛県');
+insert into areas(name) values ('高知県');
+insert into areas(name) values ('福岡県');
+insert into areas(name) values ('佐賀県');
+insert into areas(name) values ('長崎県');
+insert into areas(name) values ('熊本県');
+insert into areas(name) values ('大分県');
+insert into areas(name) values ('宮崎県');
+insert into areas(name) values ('鹿児島県');
+insert into areas(name) values ('沖縄県');
+
+create table positions (
+  id integer default next_val('positions_id'),
+  name varchar(255)
+);
+
+insert into positions(name) values ('会長');
+insert into positions(name) values ('社長');
+insert into positions(name) values ('取締');
+insert into positions(name) values ('執行役員');
+insert into positions(name) values ('CEO');
+insert into positions(name) values ('COO');
+insert into positions(name) values ('CTO');
+insert into positions(name) values ('CFO');
+insert into positions(name) values ('代表');
+insert into positions(name) values ('理事');
+insert into positions(name) values ('顧問');
+insert into positions(name) values ('院長');
+insert into positions(name) values ('頭取');
+insert into positions(name) values ('会頭');
+insert into positions(name) values ('正社員');
+insert into positions(name) values ('その他');

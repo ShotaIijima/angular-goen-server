@@ -1,0 +1,7 @@
+conf.js
+package-lock.json
+package.json
+yarn.lock
+logs/
+node_modules/
+.DS_Store
