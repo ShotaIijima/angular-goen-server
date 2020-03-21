@@ -3,3 +3,5 @@ yarn.lock
 logs/
 node_modules/
 .DS_Store
+dist/
+dist.zip

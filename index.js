@@ -66,6 +66,8 @@ passport.use(new FBStrategy({
   }
 ));
 
+app.use(express.static(__dirname + '/dist'));
+
 app.post(conf['app']['url_pref'] + '/login/local', authController.login);
 app.get(conf['app']['url_pref'] + '/auth/facebook', passport.authenticate('facebook', {
   scope: ['public_profile']
@@ -86,6 +88,8 @@ app.get(conf['app']['url_pref'] + '/user/:id', verifyToken, userController.doGet
 app.post(conf['app']['url_pref'] + '/user', verifyToken, userController.doUpdate);
 app.get(conf['app']['url_pref'] + '/position/:id', verifyToken, positionController.doGetOne);
 app.get(conf['app']['url_pref'] + '/position/all', verifyToken, positionController.doGetAll);
+//app.get('*', (req, res, next) => {res.sendFile(__dirname + '/dist/index.html');});
+app.get('*', (req, res, next) => {res.send('');});
 
 app.use(systemLogger());
 app.use(accessLogger());
