@@ -12,6 +12,7 @@ const cookieParser = require('cookie-parser');
 const conf = require('./conf');
 const userController = require('./controllers/User');
 const positionController = require('./controllers/Position');
+const masterDataController = require('./controllers/MasterDatas');
 const authController = require('./controllers/Auth');
 const { verifyToken, verifyFBSession } = require('./services/VerifyToken');
 const jwt = require('jsonwebtoken');
@@ -66,8 +67,6 @@ passport.use(new FBStrategy({
   }
 ));
 
-app.use(express.static(__dirname + '/dist'));
-
 app.post(conf['app']['url_pref'] + '/login/local', authController.login);
 app.get(conf['app']['url_pref'] + '/auth/facebook', passport.authenticate('facebook', {
   scope: ['public_profile']
@@ -84,12 +83,8 @@ app.get(conf['app']['url_pref'] + '/fbuser', verifyFBSession, (req, res, next) =
   req.session.destroy();
   res.json({code: 200, res: {token: token}});
 });
-app.get(conf['app']['url_pref'] + '/user/:id', verifyToken, userController.doGetOne);
 app.post(conf['app']['url_pref'] + '/user', verifyToken, userController.doUpdate);
-app.get(conf['app']['url_pref'] + '/position/:id', verifyToken, positionController.doGetOne);
-app.get(conf['app']['url_pref'] + '/position/all', verifyToken, positionController.doGetAll);
-//app.get('*', (req, res, next) => {res.sendFile(__dirname + '/dist/index.html');});
-app.get('*', (req, res, next) => {res.send('');});
+app.get(conf['app']['url_pref'] + '/master/all', masterDataController.doGetAllMaster);
 
 app.use(systemLogger());
 app.use(accessLogger());
