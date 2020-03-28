@@ -56,7 +56,7 @@ passport.deserializeUser((user, done) => {
 passport.use(new FBStrategy({
   clientID: conf['oauth_key']['fb']['id'],
   clientSecret: conf['oauth_key']['fb']['secret'],
-  callbackURL: "http://localhost:3000/api/auth/facebook/callback",
+  callbackURL: conf['app']['server_url'] + "/api/auth/facebook/callback",
   //profileFields: ['address', 'birthday', 'displayName', 'email', 'gender', 'name', 'profile_pic']
   profileFields: ['address', 'birthday', 'displayName', 'email', 'profileUrl']
 },
