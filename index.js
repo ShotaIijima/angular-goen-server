@@ -88,9 +88,6 @@ app.get(conf['app']['url_pref'] + '/fbuser', verifyFBSession, (req, res, next) =
 app.post(conf['app']['url_pref'] + '/user', verifyToken, userController.doUpdate);
 app.get(conf['app']['url_pref'] + '/master/all', masterDataController.doGetAllMaster);
 
-app.use('/*', express.static(__dirname + '/dist/index.html'));
-app.use('/pages/*', express.static(__dirname + '/dist/index.html'));
-
 app.use(systemLogger());
 app.use(accessLogger());
 
