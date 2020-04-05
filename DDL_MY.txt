@@ -11,6 +11,7 @@ create table users (
   sex integer,
   birthday varchar(255),
   self_introduction varchar(255),
+  type integer,
   company integer,
   reason integer,
   area integer,

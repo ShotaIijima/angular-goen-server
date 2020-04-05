@@ -81,6 +81,7 @@ module.exports = {
   },
   getByBasic: (acc, pass) => {
     return new Promise ((resolve, reject) => {
+      console.log(`select * from ${table} where account = '${acc}' and password = '${pass}'`);
       db.ExecuteQuery(`select * from ${table} where account = '${acc}' and password = '${pass}'`)
       .then((users) => {
         if (users.length > 0) {
@@ -146,10 +147,26 @@ module.exports = {
           sql = sql.slice(0, -2);
           sql += ` where id = ${user.id}`;
           console.log(sql);
-          db.ExecuteQuery(sql);
-          resolve("OK");
+          db.ExecuteQuery(sql)
+          .then((result) => {
+            resolve("OK");
+          })
+          .catch((err) => {
+            reject(err);
+          })
         }
       })
     });
+  },
+  updatePhotoPath: (id, photo_path) => {
+    return new Promise ((resolve, reject) => {
+      db.ExecuteQuery(`update ${table} set photo_path = '${photo_path}' where id = ${id}`)
+      .then((result) => {
+        resolve("OK");
+      })
+      .catch((err) => {
+        reject(err);
+      })
+    })
   }
 }

@@ -15,7 +15,7 @@ const positionController = require('./controllers/Position');
 const masterDataController = require('./controllers/MasterDatas');
 const authController = require('./controllers/Auth');
 const { verifyToken, verifyFBSession } = require('./services/VerifyToken');
-const jwt = require('jsonwebtoken');
+const multer  = require('multer');
 //const MySQLStore = require('express-mysql-session')(session);
 
 const app = express();
@@ -23,6 +23,13 @@ const app = express();
 app.use(passport.initialize());
 app.use(passport.session());
 app.use(cookieParser());
+
+app.use(bodyParser.json({ type: 'application/json' }));
+app.use(bodyParser.urlencoded({
+  extended: false,
+  type: 'application/x-www-form-urlencoded'
+}));
+var upload = multer({ dest: 'uploads/' });
 
 app.use(session({
   secret: conf.session.key,
@@ -36,7 +43,6 @@ app.use(session({
 app.use(bodyParser.urlencoded({
   extended: false
 }));
-app.use(bodyParser.json());
 
 app.use(function(req, res, next) {
   res.header("Access-Control-Allow-Origin", "localhost:4200");
@@ -87,6 +93,7 @@ app.get(conf['app']['url_pref'] + '/fbuser', verifyFBSession, (req, res, next) =
 });
 app.post(conf['app']['url_pref'] + '/user', verifyToken, userController.doUpdate);
 app.get(conf['app']['url_pref'] + '/master/all', masterDataController.doGetAllMaster);
+app.post(conf['app']['url_pref'] + '/photo/save', upload.any(), verifyToken, userController.savePhoto);
 
 app.use(systemLogger());
 app.use(accessLogger());
