@@ -11,14 +11,18 @@ const session = require('express-session');
 const cookieParser = require('cookie-parser');
 const conf = require('./conf');
 const userController = require('./controllers/User');
+const tdController = require('./controllers/TypeDetail');
 const positionController = require('./controllers/Position');
 const masterDataController = require('./controllers/MasterDatas');
+const relationController = require('./controllers/Relation');
 const authController = require('./controllers/Auth');
 const { verifyToken, verifyFBSession } = require('./services/VerifyToken');
 const multer  = require('multer');
 //const MySQLStore = require('express-mysql-session')(session);
 
 const app = express();
+
+app.use(cors());
 
 app.use(passport.initialize());
 app.use(passport.session());
@@ -43,13 +47,6 @@ app.use(session({
 app.use(bodyParser.urlencoded({
   extended: false
 }));
-
-app.use(function(req, res, next) {
-  res.header("Access-Control-Allow-Origin", "localhost:4200");
-  res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
-  res.header('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE, OPTIONS');
-  next();
-});
 
 passport.serializeUser((user, done) => {
   done(null, user);
@@ -81,7 +78,7 @@ app.get(conf['app']['url_pref'] + '/auth/facebook', passport.authenticate('faceb
 }));
 app.get(conf['app']['url_pref'] + '/auth/facebook/callback',
   passport.authenticate('facebook', {
-    failureRedirect: 'http://localhost:4200/login'
+    failureRedirect: 'https://34.71.76.92/login'
   }), authController.fbAuthCallback);
 app.post(conf['app']['url_pref'] + '/signin/local', authController.signin);
 app.get(conf['app']['url_pref'] + '/logout', verifyToken, (req, res, next) => {req.session.user = null;});
@@ -92,7 +89,10 @@ app.get(conf['app']['url_pref'] + '/fbuser', verifyFBSession, (req, res, next) =
   res.json({code: 200, res: {token: token}});
 });
 app.post(conf['app']['url_pref'] + '/user', verifyToken, userController.doUpdate);
+app.get(conf['app']['url_pref'] + '/relations', verifyToken, relationController.doGetAll);
+app.post(conf['app']['url_pref'] + '/relations', verifyToken, relationController.update);
 app.get(conf['app']['url_pref'] + '/master/all', masterDataController.doGetAllMaster);
+app.post(conf['app']['url_pref'] + '/typedetails', tdController.doGetByType);
 app.post(conf['app']['url_pref'] + '/photo/save', upload.any(), verifyToken, userController.savePhoto);
 
 app.use(systemLogger());

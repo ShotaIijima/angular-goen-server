@@ -1,23 +1,24 @@
 const user = require('../models/User');
+const tduser = require('../models/TDUser');
 
 module.exports = {
-    doGetOne: function (req, res, next) {
-        user.getOne(req.params['id'])
-        .then((result) => {
-            res.json({
-                message: "Hello,world"
-            });
-        })
-        .catch((err) => {
-            console.log(err);
-        })
-    },
     doUpdate: function (req, res, next) {
         if(req.account.user.id === req.body.id) {
             user.updateUser(req.body)
             .then((result) => {
-                res.json({
-                    code: 200
+                tduser.updateUser(req.body)
+                .then((re) => {
+                    res.json({
+                        code: 200,
+                        updated_at: result
+                    });
+                })
+                .catch((err) => {
+                    console.log(err);
+                    res.json({
+                        code: 403,
+                        err: err
+                    });
                 });
             })
             .catch((err) => {

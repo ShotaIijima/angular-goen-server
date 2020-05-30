@@ -7,6 +7,7 @@ create table users (
   photo_path varchar(255),
   account varchar(255),
   mail_address varchar(255),
+  phone_number varchar(255),
   password varchar(255),
   sex integer,
   birthday varchar(255),
@@ -25,12 +26,28 @@ create table users (
   chatwork varchar(255),
   github varchar(255),
   japanese_proficiency varchar(255),
-  birthplace integer,
+  address integer,
+  address_detail varchar(255),
   bloodtype integer,
   welfare varchar(255),
   work_place integer,
   wp_detail varchar(255),
-  apeal varchar(1023)
+  apeal varchar(1023),
+  created_at timestamp default now(),
+  updated_at timestamp null
+);
+
+create table relations (
+  mng integer,
+  worker integer,
+  type integer,
+  mng_grade integer,
+  mng_memo varchar(255),
+  worker_grade integer,
+  worker_memo varchar(255),
+  com_url varchar(255),
+  created_at timestamp default now(),
+  deleted_at timestamp null
 );
 
 create table workhists (
@@ -53,7 +70,9 @@ create table companies (
   work_place integer,
   wp_detail varchar(255),
   apeal varchar(1023),
-  detail varchar(255)
+  detail varchar(255),
+  created_at timestamp default now(),
+  updated_at timestamp null
 );
 
 create table types (
@@ -78,6 +97,36 @@ insert into types(name) values ('実習生管理');
 insert into types(name) values ('ホテル');
 insert into types(name) values ('自動車整備');
 insert into types(name) values ('その他');
+
+create table type_details (
+  id integer primary key,
+  name varchar(255),
+  type integer
+);
+
+insert into type_details(id, name, type) values (100, 'Java: Servlet/JSP', 1);
+insert into type_details(id, name, type) values (110, 'Java: SpringFramework', 1);
+insert into type_details(id, name, type) values (120, 'Java: Android開発', 1);
+insert into type_details(id, name, type) values (130, 'Java: その他', 1);
+insert into type_details(id, name, type) values (150, 'Swift: iOSアプリ開発', 1);
+insert into type_details(id, name, type) values (151, 'Objective-C: iOSアプリ開発', 1);
+insert into type_details(id, name, type) values (160, 'Python: Django', 1);
+insert into type_details(id, name, type) values (170, 'Python: Flask', 1);
+insert into type_details(id, name, type) values (180, 'Python: 機械学習', 1);
+insert into type_details(id, name, type) values (190, 'Python: その他', 1);
+insert into type_details(id, name, type) values (210, 'PHP: Laravel', 1);
+insert into type_details(id, name, type) values (220, 'PHP: CakePHP', 1);
+insert into type_details(id, name, type) values (230, 'PHP: Codeigniter', 1);
+insert into type_details(id, name, type) values (240, 'PHP: その他', 1);
+insert into type_details(id, name, type) values (600, 'DB: PostgreSQL', 1);
+insert into type_details(id, name, type) values (605, 'DB: MySQL', 1);
+insert into type_details(id, name, type) values (610, 'DB: Oracle', 1);
+
+
+create table td_users (
+  user integer,
+  type_detail integer
+);
 
 create table reasons (
   id integer auto_increment primary key,

@@ -28,7 +28,7 @@ module.exports = {
         })
         .catch((err) => {
             console.log(err)
-            res.json({code: 500, res: msgs.err.exception})
+            res.json({code: 500, res: err})
         })
     },
 }

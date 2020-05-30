@@ -64,6 +64,9 @@ User = {
   work_place: 0,
   wp_detail: '',
   apeal: '',
+  type: 0,
+  created_at: '',
+  updated_at: ''
 }
 
 const db = require('./db');
@@ -81,7 +84,6 @@ module.exports = {
   },
   getByBasic: (acc, pass) => {
     return new Promise ((resolve, reject) => {
-      console.log(`select * from ${table} where account = '${acc}' and password = '${pass}'`);
       db.ExecuteQuery(`select * from ${table} where account = '${acc}' and password = '${pass}'`)
       .then((users) => {
         if (users.length > 0) {
@@ -92,14 +94,23 @@ module.exports = {
       })
     });
   },
-  makeNew: (acc, mail, pass) => {
+  getMatchLikeUsers: () => {
+    return db.ExecuteQuery(`select * from ${table} where facebook_id = ${id}`);
+  },
+  makeNew: (acc, mail, pass, is_mng) => {
+    var auth_type = null
+    if(is_mng === '1'){
+      auth_type = 3
+    } else {
+      auth_type = 1
+    }
     return new Promise ((resolve, reject) => {
       db.ExecuteQuery(`select * from ${table} where mail_address = '${mail}' or account = '${acc}'`)
       .then((users) => {
         if (users.length > 0) {
           reject('exists');
         } else {
-          db.ExecuteQuery(`insert into ${table}(auth_type, mail_address, account, password) values (1, '${mail}', '${acc}', '${pass}')`)
+          db.ExecuteQuery(`insert into ${table}(auth_type, mail_address, account, password) values (${auth_type}, '${mail}', '${acc}', '${pass}')`)
           db.ExecuteQuery(`select * from ${table} where account = '${acc}'`)
           .then((users) => {
             resolve(users[0]);
@@ -139,17 +150,24 @@ module.exports = {
         } else {
           var sql = `update ${table} set `;
           Object.keys(user).forEach((key) => {
+            if(key === 'created_at' || key === 'updated_at')
+              return
             if(typeof user[key] === 'string')
               sql += key + " = '" + user[key] + "', ";
             if(typeof user[key] === 'number')
               sql += key + " = " + user[key] + ", ";
           })
-          sql = sql.slice(0, -2);
+          sql += "updated_at = now()";
           sql += ` where id = ${user.id}`;
-          console.log(sql);
           db.ExecuteQuery(sql)
           .then((result) => {
-            resolve("OK");
+            db.ExecuteQuery(`select updated_at from ${table} where id = ${user.id}`)
+            .then((res) => {
+              resolve(res);
+            })
+            .catch((err) => {
+              reject(err);
+            })
           })
           .catch((err) => {
             reject(err);
