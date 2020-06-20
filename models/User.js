@@ -152,6 +152,8 @@ module.exports = {
           Object.keys(user).forEach((key) => {
             if(key === 'created_at' || key === 'updated_at')
               return
+            if(user[key] == null)
+              sql += key + " = null, ";
             if(typeof user[key] === 'string')
               sql += key + " = '" + user[key] + "', ";
             if(typeof user[key] === 'number')

@@ -43,8 +43,10 @@ create table relations (
   type integer,
   mng_grade integer,
   mng_memo varchar(255),
+  mng_last_login varchar(255),
   worker_grade integer,
   worker_memo varchar(255),
+  worker_last_login varchar(255),
   com_url varchar(255),
   created_at timestamp default now(),
   deleted_at timestamp null
